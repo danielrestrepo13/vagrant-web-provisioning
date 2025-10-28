@@ -187,8 +187,8 @@ http://192.168.56.10/info.php
 
 ## 5. 📸 Evidencia de Ejecución y Resultado Final
 
-![Sitio Web Apache](capturas/Sitio_Web_Apache.png)
-![Conexión PHP PostgreSQL](capturas/Conexión_PHP_PostgreSQL.png)
+![Sitio Web Apache](Sitio_Web_Apache.png)
+![Conexión PHP PostgreSQL](Conexión_PHP_PostgreSQL.png)
 
 
 
