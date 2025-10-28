@@ -61,7 +61,9 @@ vagrant provision db
 ```
 
 **Acceso a la Aplicación:**
+
 Sitio web principal: http://192.168.56.10
+
 Página PHP conectada a PostgreSQL: http://192.168.56.10/info.php
 
 ## 3. Scripts de Provisionamiento
@@ -213,9 +215,13 @@ http://192.168.56.10/info.php
 
 
 ## Autor
+
 Daniel David García Restrepo
+
 Estudiante de Ingeniería de Datos e Inteligencia Artificial
+
 Universidad Autónoma de Occidente – Octubre 2025
+
 
 
 
