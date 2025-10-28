@@ -20,19 +20,16 @@ PG_CONF_FILE="$PG_CONF_DIR/postgresql.conf"
 PG_HBA_FILE="$PG_CONF_DIR/pg_hba.conf"
 
 
-# ------------------------------------------------------------------
-# 2. CONFIGURACIÓN DE ACCESO EXTERNO
-# ------------------------------------------------------------------
+# CONFIGURACIÓN DE ACCESO EXTERNO
+
 echo "Configurando PostgreSQL para aceptar conexiones externas..."
 
-
-# 2.1. Modificar postgresql.conf para escuchar en todas las IPs ('*')
-# Busca y reemplaza la línea de listen_addresses
+# Modificar postgresql.conf para escuchar en todas las IPs ('*')
 
 # Esta línea fuerza el valor correcto, sin importar la sintaxis original
 sudo sed -i -r "s/^(#)?listen_addresses\s*=\s*'.*'/listen_addresses = '*'/" $PG_CONF_FILE
 
-# 2.2. Modificar pg_hba.conf para permitir la conexión desde la red Vagrant (192.168.56.x)
+# Modificar pg_hba.conf para permitir la conexión desde la red Vagrant (192.168.56.x)
 # Añade una regla al final del archivo para permitir la conexión al usuario 'daniel'
 sudo sed -i '/192.168.56.0\/24/d' $PG_HBA_FILE
 echo "host    taller_sistemas_operativos    daniel    192.168.56.0/24    md5" | sudo tee -a $PG_HBA_FILE
