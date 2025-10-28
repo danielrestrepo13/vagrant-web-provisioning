@@ -17,9 +17,11 @@ Implementar un entorno virtualizado con **Vagrant** que incluya:
 ## ⚙️ Clonación del repositorio
 Primero se realizó un fork del repositorio base y se clonó en el equipo local:
 
-```bash
 git clone https://github.com/<tu_usuario>/vagrant-web-provisioning.git
 cd vagrant-web-provisioning
+
+
+---
 
 ## 🚀 Pasos Generales
 Clonar este repositorio.
@@ -29,10 +31,9 @@ Clonar este repositorio.
 
 ## 💡 Reto
 - Completar provision-db.sh para instalar PostgreSQL.
-
 - Crear una base de datos y tabla de ejemplo.
-
 - Conectar la página PHP a la base de datos y mostrar los datos.
+
 
 
 
