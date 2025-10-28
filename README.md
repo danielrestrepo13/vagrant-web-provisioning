@@ -201,11 +201,16 @@ http://192.168.56.10/info.php
 
 
 ## 5. 📸 Evidencia de Ejecución y Resultado Final
-Sitio web cargado desde Apache
+
+**Sitio web cargado desde Apache**
+
 ![Sitio Web Apache](Sitio_Web_Apache.png)
 
-info.php mostrando conexión exitosa con PostgreSQL
+
+**info.php mostrando conexión exitosa con PostgreSQL**
+
 ![Conexión PHP PostgreSQL](Conexión_PHP_PostgreSQL.png)
+
 
 ## Autor
 Daniel David García Restrepo
