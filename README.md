@@ -17,8 +17,10 @@ Implementar un entorno virtualizado con **Vagrant** que incluya:
 ## ⚙️ Clonación del repositorio
 Primero se realizó un fork del repositorio base y se clonó en el equipo local:
 
+```bash
 git clone https://github.com/<tu_usuario>/vagrant-web-provisioning.git
 cd vagrant-web-provisioning
+```
 
 ---
 
@@ -36,81 +38,91 @@ Clonar este repositorio.
 ## 1. Proceso
 Se definieron dos máquinas virtuales en el Vagrantfile con sus respectivas IPs privadas para comunicación interna:
 
-### Máquina / Rol / Dirección IP Privada / Propósito
-**web** / Servidor Web/App / 192.168.56.10 / Apache, PHP y la aplicación web
-**db** / Base de Datos / 192.168.56.11 / Servidor PostgreSQL
+
+| Máquina | Rol              | Dirección IP Privada | Propósito                       |
+| :------ | :--------------- | :------------------- | :------------------------------ |
+| **web** | Servidor Web/App | 192.168.56.10        | Apache, PHP y la aplicación web |
+| **db**  | Base de Datos    | 192.168.56.11        | Servidor PostgreSQL             |
+
 
 ## 2. Pasos de Instalación y Provisionamiento
 - Para levantar y configurar el entorno, se deben seguir estos pasos desde la carpeta raíz del proyecto:
 
 Levantar y Provisionar Ambas Máquinas:
 Este comando inicializa las VMs y ejecuta los scripts de provisionamiento (provision-web.sh y provision-db.sh).
+```bash
 vagrant up
+```
 
 - Reprovisionamiento (si ya están encendidas):
+```bash
 vagrant provision web
 vagrant provision db
+```
 
-- Acceso a la Aplicación:
+**Acceso a la Aplicación:**
 Sitio web principal: http://192.168.56.10
-
 Página PHP conectada a PostgreSQL: http://192.168.56.10/info.php
 
 ## 3. Scripts de Provisionamiento
 ## A. provision-web.sh (Máquina Web)
 Instala y configura Apache, PHP y el módulo PHP–PostgreSQL:
 
+```bash
 #!/usr/bin/env bash
 
-### Actualizar paquetes
+# Actualizar paquetes
 sudo apt-get update -y
 
-### Instalar Apache, PHP y el módulo de PostgreSQL
+# Instalar Apache, PHP y el módulo de PostgreSQL
 sudo apt-get install -y apache2 php libapache2-mod-php php-pgsql
 
-### Habilitar e iniciar Apache
+# Habilitar e iniciar Apache
 sudo systemctl enable apache2
 sudo systemctl start apache2
 
-### Reiniciar Apache para cargar el módulo php-pgsql
+# Reiniciar Apache para cargar el módulo php-pgsql
 sudo systemctl restart apache2
 
-### Copiar archivos del proyecto (carpeta compartida Vagrant)
+# Copiar archivos del proyecto (carpeta compartida Vagrant)
 sudo cp -r /vagrant/www/* /var/www/html/
 
-### Dar permisos al servidor web
+# Dar permisos al servidor web
 sudo chown -R www-data:www-data /var/www/html
+```
 
 ## B. provision-db.sh (Máquina DB)
 Instala PostgreSQL, configura la red para aceptar conexiones externas y crea la base de datos con datos de ejemplo.
+
+```bash
 #!/usr/bin/env bash
 
-### Actualizar paquetes e instalar PostgreSQL
+# Actualizar paquetes e instalar PostgreSQL
 sudo apt-get update -y
 sudo apt-get install -y postgresql postgresql-contrib
 
-### Iniciar servicio
+# Iniciar servicio
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
 
-### Configuración de rutas fijas (versión 12)
+# Configuración de rutas fijas (versión 12)
 PG_CONF_DIR="/etc/postgresql/12/main"
 PG_CONF_FILE="$PG_CONF_DIR/postgresql.conf"
 PG_HBA_FILE="$PG_CONF_DIR/pg_hba.conf"
 
 echo "Configurando PostgreSQL para aceptar conexiones externas..."
 
-### Habilitar escucha en todas las IPs
+# Habilitar escucha en todas las IPs
 sudo sed -i -r "s/^(#)?listen_addresses\s*=\s*'.*'/listen_addresses = '*'/" $PG_CONF_FILE
 
-### Permitir conexión desde la red privada de Vagrant
+# Permitir conexión desde la red privada de Vagrant
 sudo sed -i '/192.168.56.0\/24/d' $PG_HBA_FILE
 echo "host    taller_sistemas_operativos    daniel    192.168.56.0/24    md5" | sudo tee -a $PG_HBA_FILE
 
-### Reiniciar PostgreSQL
+# Reiniciar PostgreSQL
 sudo systemctl restart postgresql
 
-### Crear base de datos, usuario y tabla
+# Crear base de datos, usuario y tabla
 sudo -u postgres psql <<EOF
 DROP DATABASE IF EXISTS taller_sistemas_operativos;
 DROP USER IF EXISTS daniel;
@@ -133,10 +145,12 @@ INSERT INTO estudiantes (nombre, carrera) VALUES
 EOF
 
 echo "Provisionamiento de la base de datos completado."
+```
 
 ## 4. Archivo info.php
 Archivo PHP conectado a PostgreSQL que muestra los datos de la tabla estudiantes.
 
+```php
 <!DOCTYPE html>
 <html>
 <head>
@@ -180,15 +194,23 @@ Archivo PHP conectado a PostgreSQL que muestra los datos de la tabla estudiantes
   ?>
 </body>
 </html>
+```
 
 - **Acceso desde el navegador:**
 http://192.168.56.10/info.php
 
 
 ## 5. 📸 Evidencia de Ejecución y Resultado Final
-
+Sitio web cargado desde Apache
 ![Sitio Web Apache](Sitio_Web_Apache.png)
+
+info.php mostrando conexión exitosa con PostgreSQL
 ![Conexión PHP PostgreSQL](Conexión_PHP_PostgreSQL.png)
+
+## Autor
+Daniel David García Restrepo
+Estudiante de Ingeniería de Datos e Inteligencia Artificial
+Universidad Autónoma de Occidente – Octubre 2025
 
 
 
